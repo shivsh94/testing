@@ -137,3 +137,7 @@ export default function PopUpForm({ open, onClose }: PopUpFormProps) {
     </Drawer>
   );
 }
+
+function setIsSubmitted(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
