@@ -15,7 +15,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { userInfo } from "@/lib/userApi";
 import { useSlugStore } from "@/store/useProjectStore";
-import { useState } from "react"; // <-- make sure this is imported!
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -29,7 +28,6 @@ interface PopUpFormProps {
 
 export default function PopUpForm({ open, onClose }: PopUpFormProps) {
   const { data: slugData } = useSlugStore();
-  const [isSubmitted, setIsSubmitted] = useState(false); // <-- uncommented here
   
   const { mutate, isPending, error } = useMutation({
     mutationFn: (data: { name: string; contact: string }) => {
@@ -39,14 +37,12 @@ export default function PopUpForm({ open, onClose }: PopUpFormProps) {
       return userInfo(slugData.id, slugData.company_id, data.name, data.contact);
     },
     onSuccess: (response) => {
-      // Save the response to local storage
       try {
         localStorage.setItem('formSubmissionResponse', JSON.stringify(response));
       } catch (err) {
         console.error("Failed to save to local storage:", err);
       }
       
-      setIsSubmitted(true);
       reset();
       onClose();
     },
